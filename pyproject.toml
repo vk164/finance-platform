@@ -1,0 +1,65 @@
+[project]
+name = "finance-platform"
+version = "0.1.0"
+requires-python = ">=3.15"
+
+
+[dependency-groups]
+dev = [
+    "pyright>=1.1.414",
+    "pytest>=9.1.1",
+    "ruff>=0.17.1",
+    "httpx>=0.28.1",
+]
+
+[tool.uv]
+package = false
+
+[tool.uv.workspace]
+members = [
+    "services/*",
+    "packages/*",
+]
+
+[tool.ruff]
+target-version = "py315"
+line-length = 100
+indent-width = 4
+
+[tool.ruff.lint]
+select = [
+    "E4",  # Import errors
+    "E7",  # Statement errors
+    "E9",  # Syntax errors
+    "F",   # Pyflakes
+    "I",   # Import sorting
+    "UP",  # Modern Python syntax
+    "B",   # Common bug patterns
+]
+
+[tool.ruff.format]
+quote-style = "double"
+indent-style = "space"
+
+[tool.pyright]
+include = [
+    "services/transactions/src",
+    "services/transactions/tests",
+]
+exclude = [
+    "**/__pycache__",
+    "**/.pytest_cache",
+]
+pythonVersion = "3.15"
+typeCheckingMode = "strict"
+venvPath = "."
+venv = ".venv"
+executionEnvironments = [
+    { root = "services/transactions", extraPaths = ["services/transactions/src"] },
+]
+
+[tool.pytest.ini_options]
+testpaths = ["services"]
+python_files = ["test_*.py"]
+python_functions = ["test_*"]
+addopts = "-ra --import-mode=importlib"
