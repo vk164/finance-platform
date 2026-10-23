@@ -47,9 +47,9 @@ Python versions and tool settings are defined in pyproject.toml. Root pytest,
 Ruff, and strict Pyright configuration is shared; do not duplicate it per service.
 Apply formatting only to affected files when needed.
 
-### Pre-commit hook
+### Git hooks
 
-After cloning, enable the versioned hook with:
+After cloning, enable the versioned hooks with:
 
 ```sh
 git config core.hooksPath .githooks
@@ -63,6 +63,15 @@ review and stage the fixes, then retry. Files are never staged automatically.
 Ruff operates on working-tree files, so review partial staging before committing.
 Pyright failures also block the commit. Keep these checks enabled; fix failures
 rather than bypassing the hook.
+
+The commit-msg hook runs `uv run cz check --commit-msg-file` using Commitizen
+from the workspace dev dependencies. Rules are configured in root pyproject.toml
+with `cz_conventional_commits`. Use supported types such as feat, fix, docs,
+refactor, perf, test, build, ci, style, chore, or revert; scope and `!` are optional.
+Examples: `feat(transactions): add filtering`, `fix!: change response contract`.
+`allowed_prefixes = []` disables bypasses for merge/revert/fixup messages: their
+headers must also follow the convention. Use `uv run cz commit` for an interactive
+commit prompt. Do not maintain a parallel regular-expression validator.
 
 ## Architecture and Python
 
